@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="node_modules/reveal.js/css/theme/simple.css" id="theme">
     <link rel="stylesheet" href="css/default.css">
     <link rel="stylesheet" href="node_modules/reveal.js/lib/css/zenburn.css">
+    <link rel="stylesheet" media="print" href="node_modules/reveal.js/css/print/pdf.css">
 </head>
 <body>
 <div class="reveal">
@@ -168,193 +169,6 @@
                 <div class="fragment fade-in marked mark-php-index"></div>
                 <div class="fragment fade-in marked mark-php-mysql"></div>
             </div>
-        </section>
-
-        <section class="top">
-            <h3>Well known query</h3>
-
-            <pre><code class="sql">
-    SELECT name, department, revenue FROM company;
-            </code></pre>
-        </section>
-
-        <section class="top">
-            <h3>Window Function</h3>
-
-            <pre><code class="sql">
-    SELECT name, department,
-        SUM(revenue) OVER (PARTITION BY department ORDER BY name)
-        FROM company;
-            </code></pre>
-
-            <table>
-                <tr>
-                    <th>name</th>
-                    <th>department</th>
-                    <th>SUM</th>
-                </tr>
-                <tr>
-                    <td>Albert</td>
-                    <td>sales</td>
-                    <td>1200</td>
-                </tr>
-                <tr>
-                    <td>Zoe</td>
-                    <td>sales</td>
-                    <td>1200</td>
-                </tr>
-                <tr>
-                    <td>Angela</td>
-                    <td>development</td>
-                    <td>1804</td>
-                </tr>
-            </table>
-        </section>
-
-        <section data-background="images/reactionguys1.jpg">
-            <h2 class="text-white">It's that new MySQL 8 feature</h2>
-        </section>
-
-        <section data-background="images/reactionguys2.jpg">
-            <h2 class="text-white">It's a SQL 2003 standard</h2>
-        </section>
-
-        <section>
-            <img src="images/twitter-postgresql.png" height="266" width="634">
-        </section>
-
-        <section class="top">
-            <h3>Values List</h3>
-
-            <pre><code class="sql">
-    VALUES ('value1', 42, 1.8), ('value2', 12, 9);
-            </code></pre>
-        </section>
-
-        <section class="top">
-            <h3>Values List in DB Versions</h3>
-
-            <ul>
-                <li class="fragment fade-left">PostgreSQL: Yes - 8.2 (and earlier)</li>
-                <li class="fragment fade-left">MariaDB: Yes - 10.3</li>
-                <li class="fragment fade-left">MySQL: Nope</li>
-                <li class="fragment fade-left">SQL-92</li>
-            </ul>
-        </section>
-
-        <section class="top">
-            <h3>Partially implemented</h3>
-
-            <pre><code class="sql">
-    INSERT INTO foo VALUES ('value1', 42, 1.8), ('value2', 12, 9);
-            </code></pre>
-        </section>
-
-        <section class="top">
-            <h3>Column name alias</h3>
-
-            <pre><code class="sql">
-    SELECT * FROM (
-        VALUES ('value1', 42), ('value2', 12)
-    ) AS t (my_text, my_number);
-            </code></pre>
-
-            <table>
-                <tr>
-                    <th>my_text</th>
-                    <th>my_number</th>
-                </tr>
-                <tr>
-                    <td>value1</td>
-                    <td>42</td>
-                </tr>
-                <tr>
-                    <td>value2</td>
-                    <td>12</td>
-                </tr>
-            </table>
-
-            Column aliases are not supported by MariaDB
-        </section>
-
-        <section class="top">
-            <h3>JSON</h3>
-
-            <h4>MySQL/MariaDB</h4>
-
-            <pre><code class="sql">
-    SELECT JSON_OBJECT('a', name, 'b', number) AS jayson FROM foo;
-            </code></pre>
-
-            <h4>PostgreSQL</h4>
-
-            <pre><code class="sql">
-    SELECT JSON_BUILD_OBJECT('a', name, 'b', number) AS jayson FROM foo;
-            </code></pre>
-
-            <table>
-                <tr>
-                    <th>jayson</th>
-                </tr>
-                <tr>
-                    <td>{"a": "value1", "b": 42}</td>
-                </tr>
-            </table>
-        </section>
-
-        <section class="top">
-            <h3>Common Table Expression (CTE)</h3>
-
-            <pre><code class="sql">
-    WITH bar (col1, col2) AS (SELECT id, content FROM foo)
-
-    SELECT * FROM bar;
-            </code></pre>
-        </section>
-
-        <section>
-            <h3>listagg</h3>
-
-            <h4>SQL 2016 (and Oracle)</h4>
-            <pre><code class="sql text-small">
-    SELECT LISTAGG(name, ',') AS comma_separated FROM foo GROUP BY number;
-            </code></pre>
-
-            <h4>PostgreSQL / MSSQL</h4>
-            <pre><code class="sql text-small">
-    SELECT STRING_AGG(name, ',') AS comma_separated FROM foo GROUP BY number;
-            </code></pre>
-
-            <h4>MariaDB / MySQL</h4>
-            <pre><code class="sql text-small">
-    SELECT GROUP_CONCAT(name SEPARATOR ',') AS comma_separated FROM foo GROUP BY number;
-            </code></pre>
-
-            <table>
-                <tr>
-                    <th>comma_separated</th>
-                </tr>
-                <tr>
-                    <td>Sebastian,Andreas</td>
-                </tr>
-            </table>
-        </section>
-
-        <section>
-            <h2>You may not have the <strong>full</strong> power of SQL at your fingertips</h2>
-        </section>
-
-        <section data-background="images/iceberg.jpg" class="top">
-            <h3>This was just the tip of the iceberg</h3>
-            <a class="credit-badge" href="https://unsplash.com/@anniespratt?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer">
-                <span style="display:inline-block;padding:2px 3px">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg>
-                </span><span style="display:inline-block;padding:2px 3px">Annie Spratt</span>
-            </a>
-        </section>
-
-        <section>
-            <h2>Know your database!</h2>
         </section>
 
         <section>
@@ -683,9 +497,6 @@
         private $bars;
     }
             </code></pre>
-
-            <aside class="notes">
-            </aside>
         </section>
 
         <section class="top">
@@ -873,45 +684,6 @@ class FooFilter extends SQLFilter
             </ul>
         </section>
 
-        <section class="top">
-            <h3>Partial Objects</h3>
-            <pre><code class="sql">
-    SELECT PARTIAL a.{firstname, name, id} FROM Entity\AddressBook a
-            </code></pre>
-
-            <pre class="fragment fade-in"><code class="sql">
-    SELECT a0_.id AS id_0, a0_.firstname AS firstname_1, a0_.name AS name_2
-        FROM address_book a0_
-            </code></pre>
-        </section>
-
-        <section class="top">
-            <h3>Partial Objects</h3>
-            <pre><code class="php text-small">
-    $addressBook->getPhoneNumber(); // null
-            </code></pre>
-
-            <pre><code class="php text-small">
-    $addressBook->setPhoneNumber('555-5432'); // Nothing will happen on flush()
-            </code></pre>
-        </section>
-
-        <section class="top">
-            <h3>Select NEW</h3>
-            <pre><code class="sql">
-    SELECT NEW Person(a.firstname, a.name) FROM Entity\AddressBook a
-            </code></pre>
-            <pre><code class="php">
-    class Person
-    {
-        public function __construct(string $firstname, string $name)
-        {
-            // ...
-        }
-    }
-            </code></pre>
-        </section>
-
         <section>
             <h2>DQL is not SQL!</h2>
         </section>
@@ -930,6 +702,203 @@ class FooFilter extends SQLFilter
         $queryBuilder->andWhere('q.moreStuff = true');
     }
             </code></pre>
+
+        </section>
+
+        <section>
+            <h2>How expensive is this query builder SQL?</h2>
+        </section>
+
+        <!-- SQL -->
+        <section class="top">
+            <h3>Back to SQL</h3>
+
+            <pre><code class="sql">
+    SELECT name, department, revenue FROM company;
+            </code></pre>
+
+        </section>
+
+        <section class="top">
+            <h3>Window Function</h3>
+
+            <pre><code class="sql">
+    SELECT name, department,
+        SUM(revenue) OVER (PARTITION BY department ORDER BY name)
+        FROM company;
+            </code></pre>
+
+            <table>
+                <tr>
+                    <th>name</th>
+                    <th>department</th>
+                    <th>SUM</th>
+                </tr>
+                <tr>
+                    <td>Albert</td>
+                    <td>sales</td>
+                    <td>1200</td>
+                </tr>
+                <tr>
+                    <td>Zoe</td>
+                    <td>sales</td>
+                    <td>1200</td>
+                </tr>
+                <tr>
+                    <td>Angela</td>
+                    <td>development</td>
+                    <td>1804</td>
+                </tr>
+            </table>
+
+        </section>
+
+        <section data-background="images/reactionguys1.jpg">
+            <h2 class="text-white">It's that new MySQL 8 feature</h2>
+        </section>
+
+        <section data-background="images/reactionguys2.jpg">
+            <h2 class="text-white">It's a SQL 2003 standard</h2>
+        </section>
+
+        <section>
+            <img src="images/twitter-postgresql.png" height="266" width="634">
+        </section>
+
+        <section class="top">
+            <h3>Values List</h3>
+
+            <pre><code class="sql">
+    VALUES ('value1', 42, 1.8), ('value2', 12, 9);
+            </code></pre>
+
+        </section>
+
+        <section class="top">
+            <h3>Values List in DB Versions</h3>
+
+            <ul>
+                <li class="fragment fade-left">PostgreSQL: Yes - 8.2 (and earlier)</li>
+                <li class="fragment fade-left">MariaDB: Yes - 10.3</li>
+                <li class="fragment fade-left">MySQL: Nope</li>
+                <li class="fragment fade-left">SQL-92</li>
+            </ul>
+
+        </section>
+
+        <section class="top">
+            <h3>Partially implemented</h3>
+
+            <pre><code class="sql">
+    INSERT INTO foo VALUES ('value1', 42, 1.8), ('value2', 12, 9);
+            </code></pre>
+        </section>
+
+        <section class="top">
+            <h3>Column name alias</h3>
+
+            <pre><code class="sql">
+    SELECT * FROM (
+        VALUES ('value1', 42), ('value2', 12)
+    ) AS t (my_text, my_number);
+            </code></pre>
+
+            <table>
+                <tr>
+                    <th>my_text</th>
+                    <th>my_number</th>
+                </tr>
+                <tr>
+                    <td>value1</td>
+                    <td>42</td>
+                </tr>
+                <tr>
+                    <td>value2</td>
+                    <td>12</td>
+                </tr>
+            </table>
+
+            Column aliases are not supported by MariaDB
+        </section>
+
+        <section class="top">
+            <h3>JSON</h3>
+
+            <h4>MySQL/MariaDB</h4>
+
+            <pre><code class="sql">
+    SELECT JSON_OBJECT('a', name, 'b', number) AS jayson FROM foo;
+            </code></pre>
+
+            <h4>PostgreSQL</h4>
+
+            <pre><code class="sql">
+    SELECT JSON_BUILD_OBJECT('a', name, 'b', number) AS jayson FROM foo;
+            </code></pre>
+
+            <table>
+                <tr>
+                    <th>jayson</th>
+                </tr>
+                <tr>
+                    <td>{"a": "value1", "b": 42}</td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="top">
+            <h3>Common Table Expression (CTE)</h3>
+
+            <pre><code class="sql">
+    WITH bar (col1, col2) AS (SELECT id, content FROM foo)
+
+    SELECT * FROM bar;
+            </code></pre>
+        </section>
+
+        <section>
+            <h3>listagg</h3>
+
+            <h4>SQL 2016 (and Oracle)</h4>
+            <pre><code class="sql text-small">
+    SELECT LISTAGG(name, ',') AS comma_separated FROM foo GROUP BY number;
+            </code></pre>
+
+            <h4>PostgreSQL / MSSQL</h4>
+            <pre><code class="sql text-small">
+    SELECT STRING_AGG(name, ',') AS comma_separated FROM foo GROUP BY number;
+            </code></pre>
+
+            <h4>MariaDB / MySQL</h4>
+            <pre><code class="sql text-small">
+    SELECT GROUP_CONCAT(name SEPARATOR ',') AS comma_separated FROM foo GROUP BY number;
+            </code></pre>
+
+            <table>
+                <tr>
+                    <th>comma_separated</th>
+                </tr>
+                <tr>
+                    <td>Sebastian,Andreas</td>
+                </tr>
+            </table>
+        </section>
+
+        <section>
+            <h2>You may not have the <strong>full</strong> power of SQL at your fingertips</h2>
+        </section>
+
+        <section data-background="images/iceberg.jpg" class="top">
+            <h3>This was just the tip of the iceberg</h3>
+            <a class="credit-badge" href="https://unsplash.com/@anniespratt?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer">
+                <span style="display:inline-block;padding:2px 3px">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg>
+                </span><span style="display:inline-block;padding:2px 3px">Annie Spratt</span>
+            </a>
+        </section>
+
+        <section>
+            <h2>Know your database!</h2>
         </section>
 
         <!-- ending -->
